@@ -1,0 +1,167 @@
+#:import Factory kivy.factory.Factory
+#:import Clock kivy.clock.Clock
+
+
+Voter:
+    UserInfoScreen:
+        RV_proposals:
+        RV_addresses:
+
+
+<RV_proposals>:
+    viewclass: 'SelectableLabelProposals'
+    SelectableRecycleBoxLayout:
+        default_size: None, dp(20)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+        multiselect: True
+        touch_multiselect: True
+
+
+<RV_addresses>:
+    viewclass: 'SelectableLabelAddresses'
+    SelectableRecycleBoxLayout:
+        default_size: None, dp(20)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+        multiselect: True
+        touch_multiselect: True
+
+
+<SelectableLabelProposals>:
+    # Draw a background to indicate selection
+    color:(0,1,0,1)
+    canvas.before:
+        Color:
+            rgba: (0,0.3,0,0.5) if self.selected else (0,0.5,0,0.5)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+<SelectableLabelAddresses>:
+    # Draw a background to indicate selection
+    color:(0,1,0,1)
+    canvas.before:
+        Color:
+            rgba: (0,0.3,0,0.5) if self.selected else (0,0.5,0,0.5)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+# Voter screens
+<Voter>:
+    UserInfoScreen:
+        id: userinfoscreen
+        name: "userinfoscreen"
+
+#  main Layout
+
+        BoxLayout:
+            orientation: "vertical"
+            padding: 3
+            spacing: 3
+
+            Label:
+                color: (0,1,0,1)
+                text: "AweDeVotl"
+                font_size: 44
+                size_hint_y: None
+                height: "40dp"
+
+            Label:
+                color: (0,1,0,1)
+                text: "A devault voting tool"
+                font_size: 15
+                size_hint_y: None
+                height: "20dp"
+
+#user info
+            BoxLayout:
+                orientation: "horizontal"
+                size_hint_y: None
+                id: userinfo
+
+                TextInput:
+                    id: walletpass
+                    size_hint_y: None
+                    height: "30dp"
+                    color: (0,1,0,1)
+                    background_color: (0,0.5,0,1)
+                    text: "wallet passphrase"
+
+                TextInput:
+                    id: username
+                    size_hint_y: None
+                    height: "30dp"
+                    color: (0,1,0,1)
+                    background_color: (0,0.5,0,1)
+                    text: "devault.online user name"
+
+                TextInput:
+                    id: userpassword
+                    size_hint_y: None
+                    height: "30dp"
+                    color: (0,1,0,1)
+                    background_color: (0,0.5,0,1)
+                    text: "devault.online password"
+# buttons
+            BoxLayout:
+                size_hint_y: None
+                height: "40dp"
+                Button:
+                    size_hint_y: None
+                    height: "40dp"
+                    color: (0,1,0,1)
+                    background_color: (0,0.5,0,1)
+                    text: "vote up"
+                    size_hint_x: 15
+                    on_press: app.vote("up",walletpass.text,username.text,userpassword.text)
+
+                Button:
+                    size_hint_y: None
+                    height: "40dp"
+                    color: (0,1,0,1)
+                    background_color: (0,0.5,0,1)
+                    text: "clear"
+                    size_hint_x: 15
+                    on_press: output.text=(app.clear()); rv_addresses.layout_manager.clear_selection(); rv_proposals.layout_manager.clear_selection();
+
+                Button:
+                    size_hint_y: None
+                    height: "40dp"
+                    color: (0,1,0,1)
+                    background_color: (0,0.5,0,1)
+                    text: "vote down"
+                    size_hint_x: 15
+                    on_press: app.vote("down",walletpass.text,username.text,userpassword.text)
+
+# proposals
+            Label:
+                color: (0,1,0,1)
+                text: "proposals"
+                size_hint_y: None
+                height: "20dp"
+
+            RV_proposals:
+                id: rv_proposals
+
+# addresses
+            Label:
+                color: (0,1,0,1)
+                text: "addresses"
+                size_hint_y: None
+                height: "20dp"
+
+            RV_addresses:
+                id: rv_addresses
+
+            BoxLayout:
+                orientation: "vertical"
+                Label:
+                    color: (0,1,0,1)
+                    id: output
+                    text: ""
